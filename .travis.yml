@@ -1,0 +1,14 @@
+language: c
+dist: trusty
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y protobuf-compiler
+  - sudo pip install protobuf
+install:
+  - wget https://raw.githubusercontent.com/ocaml/ocaml-ci-scripts/master/.travis-opam.sh
+env:
+  - OCAML_VERSION=4.03
+  - OCAML_VERSION=4.04
+  - OCAML_VERSION=4.05
+script:
+  - bash -ex .travis-opam.sh

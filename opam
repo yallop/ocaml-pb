@@ -1,0 +1,24 @@
+opam-version: "1.2"
+name: "pb"
+version: "dev"
+maintainer: "Jeremy Yallop <yallop@gmail.com>"
+authors: "Jeremy Yallop <yallop@gmail.com>"
+homepage: "https://github.com/yallop/ocaml-pb"
+bug-reports: "https://github.com/yallop/ocaml-pb/issues"
+license: "MIT"
+dev-repo: "https://github.com/yallop/ocaml-pb.git"
+build: [[ "ocaml" "pkg/pkg.ml" "build" "--dev-pkg" "%{pinned}%"]]
+build-test: [make "test"]
+depends: [
+  "ocamlfind" {build}
+  "ocamlbuild" {build}
+  "topkg" {build & >= "0.9.0"}
+  "ounit" {test}
+  "hex" {test}
+  "batteries" {test}
+  "integers"
+  "base-bytes"
+  "result"
+  "angstrom" {= "0.6.0"}
+  "faraday"
+]

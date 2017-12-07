@@ -1,0 +1,7 @@
+description = "Protobuf encodings."
+version = "dev"
+requires = "integers"
+archive(byte) = "pb.cma"
+archive(native) = "pb.cmxa"
+plugin(byte) = "pb.cma"
+plugin(native) = "pb.cmxs"
