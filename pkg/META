@@ -1,6 +1,6 @@
 description = "Protobuf encodings."
 version = "dev"
-requires = "integers"
+requires = "integers angstrom faraday"
 archive(byte) = "pb.cma"
 archive(native) = "pb.cmxa"
 plugin(byte) = "pb.cma"
