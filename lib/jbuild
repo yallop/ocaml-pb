@@ -1,0 +1,8 @@
+(jbuild_version 1)
+
+(library
+ ((name pb)
+  (public_name pb)
+  (synopsis "Protobuf encodings.")
+  (wrapped false)
+  (libraries (integers angstrom faraday))))
