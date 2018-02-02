@@ -288,7 +288,7 @@ let read_field : type a. a field_type -> a Angstrom.t =
     | Bool -> read_varint >>| fun i ->
               not (i = UInt64.zero)
     | Msg mt -> read_string >>| fun s ->
-                begin match Angstrom.parse_only read_contents (`String s) with
+                begin match Angstrom.parse_string read_contents s with
                   Result.Ok contents -> { contents }
                 | Result.Error _ -> raise Parse_error
                 end
@@ -355,7 +355,7 @@ let create msg_type = { contents = Hashtbl.create 16 }
 let dump : string -> Format.formatter -> unit =
   let module PP = struct
     let reads (t : _ field_type) s =
-      match Angstrom.parse_only (read_field t) (`String s) with
+      match Angstrom.parse_string (read_field t) s with
       | Result.Error s -> raise Parse_error
       | Result.Ok v -> v
     let fprintf = Format.fprintf
@@ -405,12 +405,12 @@ let dump : string -> Format.formatter -> unit =
     and length_delimited fmt s =
     (** string, bytes, embedded messages, packed repeated fields *)
       let b = reads string s in
-      match Angstrom.parse_only read_contents (`String b) with
+      match Angstrom.parse_string read_contents s with
       | Result.Ok m -> msg fmt m
       | Result.Error _ -> Format.fprintf fmt "@[%S@]" b
   end in
   fun s fmt ->
-  match Angstrom.parse_only read_contents (`String s) with
+  match Angstrom.parse_string read_contents s with
   | Result.Ok m -> Format.fprintf fmt "@[%a@]@." PP.msg m
   | Result.Error _ -> raise Parse_error
 
@@ -418,7 +418,7 @@ let message name =
   (module Message (struct let name = name end) : MESSAGE)
 
 let read_from_string p s =
-  match Angstrom.parse_only p (`String s) with
+  match Angstrom.parse_string p s with
   | Result.Error _ -> raise Parse_error
   | Result.Ok v -> v
 
