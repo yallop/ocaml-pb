@@ -2,6 +2,8 @@
 
 `pb` is an OCaml library for describing and serializing [Protocol buffers (Protobuf)][protobuf] messages.
 
+Message descriptions can be written by hand, or generated from `.proto` files using the [`pb-plugin`][pb-plugin] protoc compiler plugin.
+
 ## Describing messages
 
 Protocol buffers provide both a file format for describing messages and a serialization (wire) format.  The `pb` library supports only the wire format, but there is a straightforward mapping from the file format into `pb` code.  Here is a description of a [Protobuf message][protobuf-message] with two fields, a `number` field with the [tag][protobuf-tag] `1`, and a `PhoneType` field with the tag `2` and default value `HOME`:
@@ -82,3 +84,4 @@ pp_msg PhoneNumber.t Format.std_formatter pn
 [protobuf-message]: https://developers.google.com/protocol-buffers/docs/proto#simple
 [protobuf-tag]: https://developers.google.com/protocol-buffers/docs/proto#assigning-tags
 [protobuf-scalar]: https://developers.google.com/protocol-buffers/docs/proto#scalar
+[pb-plugin]: https://github.com/yallop/ocaml-pb-plugin
