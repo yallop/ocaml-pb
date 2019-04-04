@@ -266,14 +266,14 @@ let read_contents : (key, string list) Hashtbl.t Angstrom.t =
   
 let read_field : type a. a field_type -> a Angstrom.t = 
   let open Angstrom in function
-    | Fixed64 -> LE.int64 >>| UInt64.of_int64
-    | Sfixed64 -> LE.int64
-    | Double -> LE.int64 >>| Int64.float_of_bits
+    | Fixed64 -> LE.any_int64 >>| UInt64.of_int64
+    | Sfixed64 -> LE.any_int64
+    | Double -> LE.any_int64 >>| Int64.float_of_bits
     | String -> read_string
     | Bytes -> read_bytes
-    | Fixed32 -> LE.int32 >>| UInt32.of_int32
-    | Sfixed32 -> LE.int32
-    | Float -> LE.int32 >>| Int32.float_of_bits
+    | Fixed32 -> LE.any_int32 >>| UInt32.of_int32
+    | Sfixed32 -> LE.any_int32
+    | Float -> LE.any_int32 >>| Int32.float_of_bits
     | Varint -> read_varint
     | Int32 -> read_int32
     | Int64 -> read_varint >>| UInt64.to_int64

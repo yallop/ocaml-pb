@@ -19,6 +19,6 @@ depends: [
   "integers"
   "base-bytes"
   "result"
-  "angstrom" {>= "0.7.0"}
+  "angstrom" {>= "0.10.0"}
   "faraday"
 ]
