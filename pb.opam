@@ -6,12 +6,12 @@ bug-reports: "https://github.com/yallop/ocaml-pb/issues"
 license: "MIT"
 dev-repo: "https://github.com/yallop/ocaml-pb.git"
 build: [
-  ["jbuilder" "subst" "-n" name] {pinned}
-  ["jbuilder" "build" "-p" name "-j" jobs]
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs]
 ]
-build-test: [["jbuilder" "runtest" "-p" name "-j" jobs]]
+build-test: [["dune" "runtest" "-p" name "-j" jobs]]
 depends: [
-  "jbuilder" {build & >= "1.0+beta10"}
+  "dune" {build & >= "1.0"}
   "ocamlbuild" {build}
   "ounit" {test}
   "hex" {test}
