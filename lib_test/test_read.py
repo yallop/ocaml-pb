@@ -8,17 +8,17 @@ def from_string(msg, filename):
 
 def main():
     small = from_string(test_pb2.Small,
-                        'lib_test/small.ocaml.serialized')
+                        'small.ocaml.serialized')
     assert small.small_s == 'abc'
     assert small.small_i == 17
 
     two = from_string(test_pb2.TwoString,
-                      'lib_test/twostring.ocaml.serialized')
+                      'twostring.ocaml.serialized')
     assert two.two_s == 'abc'
     assert two.two_b == 'def'
 
     c = from_string(test_pb2.Comprehensive,
-                    'lib_test/comprehensive.ocaml.serialized')
+                    'comprehensive.ocaml.serialized')
     assert list(c.repeated_uint32) == [1,2]
     assert c.required_int32 == 3
     s1 = c.required_Small
