@@ -27,7 +27,7 @@ let of_string t s = read_from_string (read_field t) s
 let slurp filename = BatFile.with_file_in filename BatIO.read_all
 
 let spew s filename = BatFile.with_file_out filename @@ fun fd ->
-  BatIO.write_string fd s
+  String.iter (fun c -> BatIO.write fd c) s
 
 let test_roundtrip _ =
   let check_roundtrip ?printer ?msg t v =
