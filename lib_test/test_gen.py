@@ -71,15 +71,15 @@ c.repeated_int32.extend([73, 74, 75, 76, 77, 78])
 
 def main():
     print 'generating comprehensive.serialized'
-    with open('lib_test/comprehensive.python.serialized', 'w') as fd:
+    with open('comprehensive.python.serialized', 'w') as fd:
         fd.write(c.SerializeToString())
 
     print 'generating small.serialized'
-    with open('lib_test/small.python.serialized', 'w') as fd:
+    with open('small.python.serialized', 'w') as fd:
         fd.write(s1.SerializeToString())
 
     print 'generating twostring.serialized'
-    with open('lib_test/twostring.python.serialized', 'w') as fd:
+    with open('twostring.python.serialized', 'w') as fd:
         fd.write(two.SerializeToString())
 
 if __name__ == '__main__':

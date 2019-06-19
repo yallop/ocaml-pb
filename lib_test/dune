@@ -1,0 +1,69 @@
+(executables
+ (names test test_messages)
+ (libraries oUnit angstrom pb batteries))
+
+(alias
+ (name pbs_python)
+ (deps comprehensive.python.serialized small.python.serialized
+   twostring.python.serialized))
+
+(alias
+ (name pbs_ocaml)
+ (deps comprehensive.ocaml.serialized small.ocaml.serialized
+   twostring.ocaml.serialized))
+
+(rule
+ (deps
+  (:< test.proto))
+ (targets test_pb2.py)
+ (action
+  (run protoc %{<} --python_out=.)))
+
+(rule
+ (deps
+  (:< test_gen.py)
+  test_pb2.py)
+ (targets comprehensive.python.serialized small.python.serialized
+   twostring.python.serialized)
+ (action
+  (setenv
+   PYTHONPATH
+   .
+   (run python %{<}))))
+
+(rule
+ (deps
+  (:< test.exe)
+  (alias pbs_python))
+ (targets comprehensive.ocaml.serialized small.ocaml.serialized
+   twostring.ocaml.serialized)
+ (action
+  (run %{<})))
+
+(alias
+ (name runtest)
+ (deps
+  (:< test.exe)
+  (alias pbs_python))
+ (action
+  (run %{<})))
+
+(alias
+ (name runtest)
+ (deps
+  (:< test_messages.exe)
+  (alias pbs_python))
+ (action
+  (run %{<})))
+
+(alias
+ (name runtest)
+ (deps
+  (:< test_read.py)
+  (alias pbs_ocaml)
+  test_pb2.py)
+ (action
+  (setenv
+   PYTHONPATH
+   .
+   (run python %{<}))))
