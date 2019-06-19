@@ -165,7 +165,6 @@ let test_roundtrip _ =
       let f2 = M1.repeated string "f2" 2
 
       module M2 = (val message "M2")
-      let f3 = M2.repeated float "f3" 10
       let f4 = M2.repeated (msg M1.t) "f4" 15
       let f5 = M2.repeated sfixed64 "f5" 20
     end in
