@@ -18,6 +18,14 @@ type key = {
   wire_type: Wire_type.t
 }
 
+module KeyMap = MoreLabels.Map.Make(struct
+    type t = key
+    let compare a b =
+      match UInt64.compare a.field_number b.field_number with
+      | 0 -> Pervasives.compare a.wire_type b.wire_type
+      | n -> n
+  end)
+
 type 'a enum = Enum_constant of int32
 
 type _ field_type =
@@ -54,7 +62,7 @@ and 'm msgtype = {
   msg_name: string;
   mutable fields: 'm boxed_field list;
 }
-and 'a msg = { contents: (key, string list) Hashtbl.t; }
+and 'a msg = { mutable contents: string list KeyMap.t; }
 
 let one_two_seven = UInt64.of_int 127
 
@@ -187,9 +195,9 @@ let rec write_field : type a.a field_type -> Faraday.t -> a -> unit =
       Faraday.write_string f s
     | Enum _ -> let Enum_constant c = v in write_int32 f c
 
-and write_contents : Faraday.t -> (key, string list) Hashtbl.t -> unit =
+and write_contents : Faraday.t -> string list KeyMap.t -> unit =
   fun f contents ->
-    MoreLabels.Hashtbl.iter contents ~f:(fun ~key:k ~data ->
+    KeyMap.iter contents ~f:(fun ~key:k ~data ->
       ListLabels.iter data ~f:(fun v ->
         write_varint f (uint64_of_key k);
         Faraday.write_string f v))
@@ -244,17 +252,15 @@ let read_unknown : Wire_type.t -> string Angstrom.t =
   | Thirty_two ->
     take 4
 
-let read_contents : (key, string list) Hashtbl.t Angstrom.t =
-  let add_one : (key, string list) Hashtbl.t -> key -> string -> unit =
+let read_contents : string list KeyMap.t Angstrom.t =
+  let add_one : string list KeyMap.t -> key -> string -> string list KeyMap.t =
     fun h k v ->
-      match Hashtbl.find h k with
-      | exception Not_found -> Hashtbl.add h k [v]
-      | vs -> Hashtbl.add h k (v :: vs)
+      match KeyMap.find k h with
+      | exception Not_found -> KeyMap.add h ~key:k ~data:[v]
+      | vs -> KeyMap.add h ~key:k ~data:(v :: vs)
   in
-  let ht_of_items items = 
-    let ht = Hashtbl.create 16 in
-    List.iter (fun (k, s) -> add_one ht k s) items;
-    ht
+  let map_of_items items =
+    List.fold_left (fun a (k, s) -> add_one a k s) items
   in
   let open Angstrom in
   let read_kv =
@@ -262,7 +268,7 @@ let read_contents : (key, string list) Hashtbl.t Angstrom.t =
     read_unknown k.wire_type >>= fun v ->
     return (k, v)
   in
-  many read_kv >>| ht_of_items
+  many read_kv >>| map_of_items KeyMap.empty
   
 let read_field : type a. a field_type -> a Angstrom.t = 
   let open Angstrom in function
@@ -350,7 +356,7 @@ struct
     f
 end
 
-let create msg_type = { contents = Hashtbl.create 16 }
+let create msg_type = { contents = KeyMap.empty }
 
 let dump : string -> Format.formatter -> unit =
   let module PP = struct
@@ -361,11 +367,10 @@ let dump : string -> Format.formatter -> unit =
     let fprintf = Format.fprintf
     let rec msg fmt m : unit =
       fprintf fmt "{@[@ ";
-      MoreLabels.Hashtbl.iter m
-        ~f:(fun ~key:k ~data ->
+      KeyMap.iter m ~f:(fun ~key:k ~data ->
           fprintf fmt "@[@[%s@]@ =>@ @[%a@]@],@ "
-                  (UInt64.to_string k.field_number)
-                  fields (k.wire_type, data));
+            (UInt64.to_string k.field_number)
+            fields (k.wire_type, data));
       fprintf fmt "@]}"
     and list fmt f l =
       fprintf fmt "[@[";
@@ -425,19 +430,18 @@ let read_from_string p s =
 let getf : type m a. m msg -> (m, a) field -> a =
   fun msg (Field field) -> match field.field_kind with
     | Repeated _ ->
-      begin match Hashtbl.find msg.contents field.key with
+      begin match KeyMap.find field.key msg.contents with
       | exception Not_found -> []
       | v -> List.rev_map (fun s -> read_from_string (read_field field.field_type) s) v
       end
     | Optional _ ->
-      begin match Hashtbl.find msg.contents field.key with
+      begin match KeyMap.find field.key msg.contents with
       | exception Not_found -> None
       | [] -> None
       | h :: _ -> Some (read_from_string (read_field field.field_type) h)
       end
     | Required ->
-      begin match Hashtbl.find msg.contents field.key with
-      | exception Not_found -> raise Not_found
+      begin match KeyMap.find field.key msg.contents with
       | [] -> raise Not_found
       | h :: _ -> read_from_string (read_field field.field_type) h
       end
@@ -447,15 +451,15 @@ let setf : type m a. m msg -> (m, a) field -> a -> unit =
     match field.field_kind, v with
     | Repeated _, v ->
       let fields = List.map (string_of_field field.field_type) v in
-      Hashtbl.add msg.contents field.key fields
+      msg.contents <- KeyMap.add msg.contents ~key:field.key ~data:fields
     | Optional _, None ->
-      Hashtbl.add msg.contents field.key []
+      msg.contents <- KeyMap.add msg.contents ~key:field.key ~data:[]
     | Optional _, Some v ->
       let fields = string_of_field field.field_type v in
-      Hashtbl.add msg.contents field.key [fields]
+      msg.contents <- KeyMap.add msg.contents ~key:field.key ~data:[fields]
     | Required, v ->
       let fields = string_of_field field.field_type v in
-      Hashtbl.add msg.contents field.key [fields]
+      msg.contents <- KeyMap.add msg.contents ~key:field.key ~data:[fields]
 
 (** Pretty-printing *)
 let pp_field_type : type a. Format.formatter -> a field_type -> unit =
@@ -519,11 +523,12 @@ struct
     fun msg_type fmt {contents=tbl} ->
     begin
       Format.fprintf fmt "@[<hv>";
-      let last_field = pred (Hashtbl.length tbl) in
+      let last_field = pred (KeyMap.cardinal tbl) in
       let fields = List.sort
           (fun ({field_number=l},_) ({field_number=r},_) ->
              compare l r) @@
-        Hashtbl.fold (fun k v -> List.cons (k,v)) tbl []
+        KeyMap.fold tbl ~init:[]
+          ~f:(fun ~key:k ~data:v -> List.cons (k,v))
       in
       ListLabels.iteri fields ~f:begin fun j (key, data) ->
         begin match ListLabels.find msg_type.fields
