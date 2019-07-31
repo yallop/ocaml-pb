@@ -10,7 +10,6 @@ depends: [
   "dune" {build & >= "1.0"}
   "ocamlbuild" {build}
   "ounit" {with-test}
-  "hex" {with-test}
   "integers"
   "base-bytes"
   "result"
