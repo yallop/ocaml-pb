@@ -1,6 +1,6 @@
 (executables
  (names test test_messages)
- (libraries oUnit angstrom pb batteries))
+ (libraries oUnit angstrom pb))
 
 (alias
  (name pbs_python)

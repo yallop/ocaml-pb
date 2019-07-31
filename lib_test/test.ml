@@ -24,10 +24,17 @@ let read_from_string p s =
 
 let of_string t s = read_from_string (read_field t) s
 
-let slurp filename = BatFile.with_file_in filename BatIO.read_all
+let slurp filename =
+  let {Unix.st_size=bytes;_} = Unix.stat filename in
+  let fd = open_in filename in
+  let s = really_input_string fd bytes in
+  close_in fd;
+  s
 
-let spew s filename = BatFile.with_file_out filename @@ fun fd ->
-  String.iter (fun c -> BatIO.write fd c) s
+let spew s filename =
+  let fd = open_out filename in
+  output_string fd s;
+  close_out fd
 
 let test_roundtrip _ =
   let check_roundtrip ?printer ?msg t v =

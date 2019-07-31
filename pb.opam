@@ -15,7 +15,6 @@ depends: [
   "ocamlbuild" {build}
   "ounit" {test}
   "hex" {test}
-  "batteries" {test}
   "integers"
   "base-bytes"
   "result"
