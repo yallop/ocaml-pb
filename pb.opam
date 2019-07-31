@@ -8,7 +8,6 @@ dev-repo: "git+https://github.com/yallop/ocaml-pb.git"
 depends: [
   "ocaml"
   "dune" {build & >= "1.0"}
-  "ocamlbuild" {build}
   "ounit" {with-test}
   "integers"
   "base-bytes"
