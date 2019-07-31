@@ -4,4 +4,4 @@ true: principal, bin_annot, safe_string, strict_sequence, debug
 "lib": include
 
 <lib/*.{ml,mli}>: package(bytes,integers,angstrom,faraday,result)
-<lib_test/*.*>: package(oUnit,integers,hex,angstrom,faraday,result,batteries)
+<lib_test/*.*>: package(oUnit,integers,hex,angstrom,faraday,result)
