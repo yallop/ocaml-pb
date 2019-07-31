@@ -1,23 +1,25 @@
-opam-version: "1.2"
-maintainer: "Jeremy Yallop <yallop@gmail.com>"
+opam-version: "2.0"
 authors: "Jeremy Yallop <yallop@gmail.com>"
+maintainer: "Jeremy Yallop <yallop@gmail.com>"
+license: "MIT"
 homepage: "https://github.com/yallop/ocaml-pb"
 bug-reports: "https://github.com/yallop/ocaml-pb/issues"
-license: "MIT"
-dev-repo: "https://github.com/yallop/ocaml-pb.git"
-build: [
-  ["dune" "subst"] {pinned}
-  ["dune" "build" "-p" name "-j" jobs]
-]
-build-test: [["dune" "runtest" "-p" name "-j" jobs]]
+dev-repo: "git+https://github.com/yallop/ocaml-pb.git"
 depends: [
+  "ocaml"
   "dune" {build & >= "1.0"}
   "ocamlbuild" {build}
-  "ounit" {test}
-  "hex" {test}
+  "ounit" {with-test}
+  "hex" {with-test}
   "integers"
   "base-bytes"
   "result"
   "angstrom" {>= "0.10.0"}
   "faraday"
 ]
+build: [
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs]
+  ["dune" "runtest" "-p" name "-j" jobs] {with-test}
+]
+synopsis: "Library for describing Protobuf messages"
