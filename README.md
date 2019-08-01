@@ -46,7 +46,7 @@ let work   = PhoneType.constant "WORK" 2l
 
 ## Serializing and deserializing
 
-Messages described by `pb` can be serialized using the [Faraday][faraday] serialization library.  The following code creates a `PhoneNumber` message, assignes values to its two fields, and writes it to a Faraday serializer:
+Messages described by `pb` can be serialized using the [Faraday][faraday] serialization library.  The following code creates a `PhoneNumber` message, assigns values to its two fields, and writes it to a Faraday serializer:
 
 ```ocaml
 let pn = create PhoneNumber.t in
