@@ -11,7 +11,7 @@ open Unsigned
 
 exception Parse_error
 
-module Wire_type = Pb_wire_type
+module Wire_type = Wire_type
 
 type key = {
   field_number: uint64;

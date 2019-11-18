@@ -5,6 +5,8 @@
  * See the file LICENSE for details.
  *)
 
+module Wire_type : module type of struct include Wire_type end
+
 (** {1} Field types *)
 
 type 'a field_type
