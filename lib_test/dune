@@ -32,29 +32,21 @@
    (run python %{<}))))
 
 (rule
- (deps
-  (:< test.exe)
-  (alias pbs_python))
+ (deps (alias pbs_python))
  (targets comprehensive.ocaml.serialized small.ocaml.serialized
    twostring.ocaml.serialized)
  (action
-  (run %{<})))
+  (run ./test.exe)))
 
 (alias
  (name runtest)
- (deps
-  (:< test.exe)
-  (alias pbs_python))
- (action
-  (run %{<})))
+ (deps (alias pbs_python))
+ (action (run ./test.exe)))
 
 (alias
  (name runtest)
- (deps
-  (:< test_messages.exe)
-  (alias pbs_python))
- (action
-  (run %{<})))
+ (deps (alias pbs_python))
+ (action (run ./test_messages.exe)))
 
 (alias
  (name runtest)
