@@ -22,7 +22,7 @@ module KeyMap = MoreLabels.Map.Make(struct
     type t = key
     let compare a b =
       match UInt64.compare a.field_number b.field_number with
-      | 0 -> compare a.wire_type b.wire_type
+      | 0 -> Wire_type.compare a.wire_type b.wire_type
       | n -> n
   end)
 

@@ -28,6 +28,8 @@ module Wire_type : sig
 
   val to_string : t -> string
 
+  val compare : t -> t -> int
+
   val pp : Format.formatter -> t -> unit
 end
 
