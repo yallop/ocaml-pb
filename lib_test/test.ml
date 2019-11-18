@@ -39,7 +39,6 @@ let spew s filename =
 let test_roundtrip _ =
   let check_roundtrip ?printer ?msg t v =
     assert_equal ?printer ?msg v (of_string t (to_string t v))
-      ~cmp:(fun x y -> Pervasives.compare x y = 0)
   in
   begin
     check_roundtrip bool true;
