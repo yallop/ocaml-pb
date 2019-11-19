@@ -2,7 +2,9 @@
 opam-version: "2.0"
 synopsis: "Library for describing Protobuf messages"
 description: "Library for describing Protobuf messages"
-maintainer: ["Jeremy Yallop <yallop@gmail.com>"]
+maintainer: [
+  "Jeremy Yallop <yallop@gmail.com>" "Rudi Grinberg <me@rgrinberg.com>"
+]
 authors: ["Jeremy Yallop <yallop@gmail.com>"]
 license: "MIT"
 homepage: "https://github.com/yallop/ocaml-pb"

@@ -7,7 +7,9 @@
 
 (license MIT)
 
-(maintainers "Jeremy Yallop <yallop@gmail.com>")
+(maintainers
+  "Jeremy Yallop <yallop@gmail.com>"
+  "Rudi Grinberg <me@rgrinberg.com>")
 (authors "Jeremy Yallop <yallop@gmail.com>")
 (source (github yallop/ocaml-pb))
 
