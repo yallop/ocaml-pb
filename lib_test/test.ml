@@ -38,7 +38,12 @@ let spew s filename =
 
 let test_roundtrip _ =
   let check_roundtrip ?printer ?msg t v =
+    (* A comparison function that respects NaN's is necessary. (=) does not work
+    because:
+     compare nan nan = 0
+     (nan = nan) = false *)
     assert_equal ?printer ?msg v (of_string t (to_string t v))
+      ~cmp:(fun x y -> compare x y = 0)
   in
   begin
     check_roundtrip bool true;
