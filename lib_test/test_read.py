@@ -2,22 +2,22 @@
 
 import test_pb2
 
-def from_string(msg, filename):
+def from_bytes(msg, filename):
     with open(filename, 'rb') as fd:
         return msg.FromString(fd.read())
 
 def main():
-    small = from_string(test_pb2.Small,
+    small = from_bytes(test_pb2.Small,
                         'small.ocaml.serialized')
     assert small.small_s == 'abc'
     assert small.small_i == 17
 
-    two = from_string(test_pb2.TwoString,
+    two = from_bytes(test_pb2.TwoString,
                       'twostring.ocaml.serialized')
     assert two.two_s == 'abc'
     assert two.two_b == 'def'
 
-    c = from_string(test_pb2.Comprehensive,
+    c = from_bytes(test_pb2.Comprehensive,
                     'comprehensive.ocaml.serialized')
     assert list(c.repeated_uint32) == [1,2]
     assert c.required_int32 == 3
