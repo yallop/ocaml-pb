@@ -2,8 +2,8 @@ language: c
 dist: trusty
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install -y protobuf-compiler
-  - sudo pip install protobuf
+  - sudo apt-get install -y protobuf-compiler python3-pip
+  - sudo pip3 install protobuf
 install:
   - wget https://raw.githubusercontent.com/ocaml/ocaml-ci-scripts/master/.travis-opam.sh
 env:
