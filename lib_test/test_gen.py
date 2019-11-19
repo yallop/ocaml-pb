@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import test_pb2
 
@@ -23,7 +23,7 @@ c.required_Small.CopyFrom(s1)
 c.required_double = 4.1
 c.optional_sfixed32 = 5
 c.optional_fixed32 = 6
-c.repeated_bytes.extend(['def', 'gh'])
+c.repeated_bytes.extend([b'def', b'gh'])
 c.repeated_bool.extend([False, True])
 c.repeated_sfixed64.extend([7,8,9])
 c.optional_bool = True
@@ -32,8 +32,8 @@ c.optional_double = 11.2
 c.required_int64 = 12
 c.required_uint64 = 13
 c.required_string = 'rstuvw'
-c.required_bytes = 'lmnopq'
-c.optional_bytes = 'rstuv'
+c.required_bytes = b'lmnopq'
+c.optional_bytes = b'rstuv'
 c.optional_sint64 = 14
 c.repeated_sint64.extend([-15,16,17])
 c.repeated_fixed32.extend([18,19,20,21])
@@ -70,16 +70,16 @@ c.required_fixed32 = 72
 c.repeated_int32.extend([73, 74, 75, 76, 77, 78])
 
 def main():
-    print 'generating comprehensive.serialized'
-    with open('comprehensive.python.serialized', 'w') as fd:
+    print('generating comprehensive.serialized')
+    with open('comprehensive.python.serialized', 'wb') as fd:
         fd.write(c.SerializeToString())
 
-    print 'generating small.serialized'
-    with open('small.python.serialized', 'w') as fd:
+    print('generating small.serialized')
+    with open('small.python.serialized', 'wb') as fd:
         fd.write(s1.SerializeToString())
 
-    print 'generating twostring.serialized'
-    with open('twostring.python.serialized', 'w') as fd:
+    print('generating twostring.serialized')
+    with open('twostring.python.serialized', 'wb') as fd:
         fd.write(two.SerializeToString())
 
 if __name__ == '__main__':

@@ -29,7 +29,7 @@
   (setenv
    PYTHONPATH
    .
-   (run python %{<}))))
+   (run python3 %{<}))))
 
 (rule
  (deps (alias pbs_python))
@@ -58,4 +58,4 @@
   (setenv
    PYTHONPATH
    .
-   (run python %{<}))))
+   (run python3 %{<}))))

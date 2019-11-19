@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import test_pb2
 
 def from_string(msg, filename):
-    with open(filename) as fd:
+    with open(filename, 'rb') as fd:
         return msg.FromString(fd.read())
 
 def main():
@@ -27,7 +27,7 @@ def main():
     assert c.required_double == 4.1
     assert c.optional_sfixed32 == 5
     assert c.optional_fixed32 == 6
-    assert list(c.repeated_bytes) == ['def', 'gh']
+    assert list(c.repeated_bytes) == [b'def', b'gh']
     assert list(c.repeated_bool) == [False, True]
     assert list(c.repeated_sfixed64) == [7,8,9]
     assert c.optional_bool == True
@@ -37,7 +37,7 @@ def main():
     assert c.required_uint64 == 13
     assert c.required_string == 'rstuvw'
     assert c.required_bytes == 'lmnopq'
-    assert c.optional_bytes == 'rstuv'
+    assert c.optional_bytes == b'rstuv'
     assert c.optional_sint64 == 14
     assert list(c.repeated_sint64) == [-15,16,17]
     assert list(c.repeated_fixed32) == [18,19,20,21]
