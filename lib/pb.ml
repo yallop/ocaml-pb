@@ -11,7 +11,7 @@ open Unsigned
 
 exception Parse_error
 
-module Wire_type = Pb_wire_type
+module Wire_type = Wire_type
 
 type key = {
   field_number: uint64;
@@ -22,7 +22,7 @@ module KeyMap = MoreLabels.Map.Make(struct
     type t = key
     let compare a b =
       match UInt64.compare a.field_number b.field_number with
-      | 0 -> Pervasives.compare a.wire_type b.wire_type
+      | 0 -> Wire_type.compare a.wire_type b.wire_type
       | n -> n
   end)
 

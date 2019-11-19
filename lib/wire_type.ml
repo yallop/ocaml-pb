@@ -48,3 +48,4 @@ let to_string = function
 
 let pp fmt v = Format.pp_print_string fmt (to_string v)
 
+let compare = compare
