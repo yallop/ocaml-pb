@@ -1,5 +1,5 @@
 language: c
-dist: trusty
+dist: bionic
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y protobuf-compiler python3-pip
