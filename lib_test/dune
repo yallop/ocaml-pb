@@ -1,6 +1,6 @@
 (executables
  (names test test_messages)
- (libraries oUnit angstrom pb))
+ (libraries ounit2 faraday integers angstrom pb result))
 
 (alias
  (name pbs_python)
