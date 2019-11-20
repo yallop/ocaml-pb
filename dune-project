@@ -26,3 +26,18 @@
   (ounit (and :with-test (>= 2.0))))
  (synopsis "Library for describing Protobuf messages")
  (description "Library for describing Protobuf messages"))
+
+(package
+ (name pb-plugin)
+ (depends
+  ocaml
+  pb
+  (dune (>= 1.11))
+  integers
+  batteries
+  result
+  (angstrom (>= 0.10.0))
+  faraday
+  (ounit (and :with-test (>= 2.0))))
+ (synopsis "Library for describing Protobuf messages")
+ (description "Library for describing Protobuf messages"))

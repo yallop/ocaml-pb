@@ -1,0 +1,33 @@
+(rule
+ (targets comprehensive.ml)
+ (deps comprehensive.proto)
+ (action (run protoc --plugin=protoc-gen-custom=%{bin:pb-plugin} --custom_out . %{deps})))
+
+(rule
+ (targets comprehensive_pb2.py)
+ (deps comprehensive.proto)
+ (action (run protoc --python_out=./ %{deps})))
+
+(rule
+ (targets
+   comprehensive.python.serialized
+   small.python.serialized)
+ (deps (glob_files *.py))
+ (action (run python3 ./test_gen.py)))
+
+(alias
+ (name runtest)
+ (deps
+  (glob_files *.py)
+  small.ocaml.serialized
+  comprehensive.ocaml.serialized)
+ (action (run python3 ./test_read.py)))
+
+(rule
+ (deps comprehensive.python.serialized)
+ (targets comprehensive.ocaml.serialized small.ocaml.serialized)
+ (action (run ./test.exe)))
+
+(executable
+ (name test)
+ (libraries ounit2 angstrom batteries faraday pb integers))
