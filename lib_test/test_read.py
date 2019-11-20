@@ -1,23 +1,23 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import test_pb2
 
-def from_string(msg, filename):
-    with open(filename) as fd:
+def from_bytes(msg, filename):
+    with open(filename, 'rb') as fd:
         return msg.FromString(fd.read())
 
 def main():
-    small = from_string(test_pb2.Small,
+    small = from_bytes(test_pb2.Small,
                         'small.ocaml.serialized')
     assert small.small_s == 'abc'
     assert small.small_i == 17
 
-    two = from_string(test_pb2.TwoString,
+    two = from_bytes(test_pb2.TwoString,
                       'twostring.ocaml.serialized')
     assert two.two_s == 'abc'
     assert two.two_b == 'def'
 
-    c = from_string(test_pb2.Comprehensive,
+    c = from_bytes(test_pb2.Comprehensive,
                     'comprehensive.ocaml.serialized')
     assert list(c.repeated_uint32) == [1,2]
     assert c.required_int32 == 3
@@ -27,7 +27,7 @@ def main():
     assert c.required_double == 4.1
     assert c.optional_sfixed32 == 5
     assert c.optional_fixed32 == 6
-    assert list(c.repeated_bytes) == ['def', 'gh']
+    assert list(c.repeated_bytes) == [b'def', b'gh']
     assert list(c.repeated_bool) == [False, True]
     assert list(c.repeated_sfixed64) == [7,8,9]
     assert c.optional_bool == True
@@ -37,7 +37,7 @@ def main():
     assert c.required_uint64 == 13
     assert c.required_string == 'rstuvw'
     assert c.required_bytes == 'lmnopq'
-    assert c.optional_bytes == 'rstuv'
+    assert c.optional_bytes == b'rstuv'
     assert c.optional_sint64 == 14
     assert list(c.repeated_sint64) == [-15,16,17]
     assert list(c.repeated_fixed32) == [18,19,20,21]
