@@ -1,0 +1,5 @@
+(executable
+ (libraries pb integers batteries faraday angstrom)
+ (package pb-plugin)
+ (name pb_plugin)
+ (public_name pb-plugin))
