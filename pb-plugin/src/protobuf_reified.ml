@@ -45,6 +45,7 @@ module Generate : sig
   val write : Format.formatter -> message list -> enum list -> unit
 end =
 struct
+  [@@@ocaml.warning "-34"]
   let ocaml_keywords = [
     "and"; "as"; "assert"; "asr"; "begin"; "class"; "constraint";
     "do"; "done"; "downto"; "effect"; "else"; "end"; "exception";
@@ -76,11 +77,11 @@ struct
     field_type: field;
     field_class: [`required | `optional of string option | `repeated]
   }
-  (* and method_ = {
-   *   method_name: string;
-   *   input_type: string;
-   *   output_type: string;
-   * } *)
+  and method_ = {
+    method_name: string;
+    input_type: string;
+    output_type: string;
+  }
   and basic = {
     basic_type: string;
     basic_constructor: string;
