@@ -117,7 +117,8 @@ let test_interoperability_small_write _ =
 
 let test_interoperability_comprehensive_write _ =
   let u32 = Unsigned.UInt32.of_int
-  and u64 = Unsigned.UInt64.of_int and bytes = Bytes.of_string in
+  and u64 = Unsigned.UInt64.of_int
+  and bytes = Bytes.of_string in
   let s = C.Small.mk ~small_s:"abc" ~small_i:17_L () in
   let s2 = C.Small.mk ~small_i:100_L () in
   let c = C.Comprehensive.mk
