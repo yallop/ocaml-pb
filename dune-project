@@ -39,5 +39,5 @@
   (angstrom (>= 0.10.0))
   faraday
   (ounit (and :with-test (>= 2.0))))
- (synopsis "Library for describing Protobuf messages")
- (description "Library for describing Protobuf messages"))
+ (synopsis "Plugin for generating pb protobuf message descriptions")
+ (description "Plugin for generating pb protobuf message descriptions"))
