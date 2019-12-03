@@ -1,12 +1,19 @@
 # pb, a library for describing Protobuf messages
 
-`pb` is an OCaml library for describing and serializing [Protocol buffers (Protobuf)][protobuf] messages.
+`pb` is an OCaml library for describing and serializing [Protocol buffers
+(Protobuf)][protobuf] messages.
 
-Message descriptions can be written by hand, or generated from `.proto` files using the [`pb-plugin`][pb-plugin] protoc compiler plugin.
+Message descriptions can be written by hand, or generated from `.proto` files
+using the `pb-plugin` protoc compiler plugin.
 
 ## Describing messages
 
-Protocol buffers provide both a file format for describing messages and a serialization (wire) format.  The `pb` library supports only the wire format, but there is a straightforward mapping from the file format into `pb` code.  Here is a description of a [Protobuf message][protobuf-message] with two fields, a `number` field with the [tag][protobuf-tag] `1`, and a `PhoneType` field with the tag `2` and default value `HOME`:
+Protocol buffers provide both a file format for describing messages and a
+serialization (wire) format. The `pb` library supports only the wire format, but
+there is a straightforward mapping from the file format into `pb` code. Here is
+a description of a [Protobuf message][protobuf-message] with two fields, a
+`number` field with the [tag][protobuf-tag] `1`, and a `PhoneType` field with
+the tag `2` and default value `HOME`:
 
 
 ```protobuf
@@ -24,7 +31,9 @@ let number = PhoneNumber.required string "number" 1
 let type_  = PhoneNumber.optional "type" 2 ~default:home
 ```
 
-The `type` field of the `PhoneNumber` message has the type `PhoneType`, an [enumeration value][protobuf-enum].  Here is a description of the `PhoneType` enumeration with its three values:
+The `type` field of the `PhoneNumber` message has the type `PhoneType`, an
+[enumeration value][protobuf-enum]. Here is a description of the `PhoneType`
+enumeration with its three values:
 
 ```protobuf
 enum PhoneType {
@@ -46,7 +55,9 @@ let work   = PhoneType.constant "WORK" 2l
 
 ## Serializing and deserializing
 
-Messages described by `pb` can be serialized using the [Faraday][faraday] serialization library.  The following code creates a `PhoneNumber` message, assigns values to its two fields, and writes it to a Faraday serializer:
+Messages described by `pb` can be serialized using the [Faraday][faraday]
+serialization library. The following code creates a `PhoneNumber` message,
+assigns values to its two fields, and writes it to a Faraday serializer:
 
 ```ocaml
 let pn = create PhoneNumber.t in
@@ -55,11 +66,13 @@ let pn = create PhoneNumber.t in
   write pn
 ```
 
-Messages can be deserialized (parsed) using the [Angstrom][angstrom] parser-combinator library.  The following code reads a message using Angstrom and retrieves the values of its fields:
+Messages can be deserialized (parsed) using the [Angstrom][angstrom]
+parser-combinator library. The following code reads a message using Angstrom and
+retrieves the values of its fields:
 
 
 ```ocaml
-let pn = match Angstrom.parse_only (read PhoneNumber.t) (`String s)) with
+let pn = match Angstrom.parse_string (read PhoneNumber.t) s) with
          | Ok m -> m
          | Error s -> failwith s
   in (getf pn number, getf pn type_)
