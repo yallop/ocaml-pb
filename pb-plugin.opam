@@ -10,12 +10,11 @@ license: "MIT"
 homepage: "https://github.com/yallop/ocaml-pb"
 bug-reports: "https://github.com/yallop/ocaml-pb/issues"
 depends: [
-  "ocaml"
+  "ocaml" {>= "4.03"}
   "pb"
   "dune" {>= "1.11"}
   "integers"
   "batteries"
-  "result"
   "angstrom" {>= "0.10.0"}
   "faraday"
   "ounit" {with-test & >= "2.0"}

@@ -3,4 +3,4 @@
  (public_name pb)
  (synopsis "Protobuf encodings.")
  (flags :standard -w -9-27-32-33-37-50)
- (libraries result integers angstrom faraday))
+ (libraries integers angstrom faraday))

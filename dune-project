@@ -16,11 +16,9 @@
 (package
  (name pb)
  (depends
-  ocaml
+  (ocaml (>= 4.03))
   (dune (>= 1.11))
   integers
-  base-bytes
-  result
   (angstrom (>= 0.10.0))
   faraday
   (ounit (and :with-test (>= 2.0))))
@@ -30,12 +28,11 @@
 (package
  (name pb-plugin)
  (depends
-  ocaml
+  (ocaml (>= 4.03))
   pb
   (dune (>= 1.11))
   integers
   batteries
-  result
   (angstrom (>= 0.10.0))
   faraday
   (ounit (and :with-test (>= 2.0))))
