@@ -15,7 +15,7 @@ depends: [
   "dune" {>= "1.11"}
   "integers"
   "batteries"
-  "angstrom" {>= "0.10.0"}
+  "angstrom" {>= "0.14.0"}
   "faraday"
   "ounit" {with-test & >= "2.0"}
 ]

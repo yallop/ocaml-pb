@@ -276,7 +276,7 @@ let run msg =
 
 let main () =
   let stdin_buf = BatIO.(read_all stdin) in
-  match Angstrom.parse_string (Pb.read M.CodeGeneratorRequest.T.t) stdin_buf with
+  match Angstrom.(parse_string ~consume:Prefix) (Pb.read M.CodeGeneratorRequest.T.t) stdin_buf with
     Result.Error e -> failf "Error parssing request: %s" e
   | Result.Ok msg -> print_string (Faraday.serialize_to_string
                                      (Pb.write (run msg)))
