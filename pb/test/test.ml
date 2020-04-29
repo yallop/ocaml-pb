@@ -18,7 +18,7 @@ let to_string t v =
 let msg_to_string m = Faraday.serialize_to_string (write m)
 
 let read_from_string p s =
-  match Angstrom.parse_string p s with
+  match Angstrom.(parse_string ~consume:Prefix) p s with
   | Result.Error _ -> Printf.kprintf failwith "parse failure (%s)" s
   | Result.Ok v -> v
 
